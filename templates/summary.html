@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Spending Summary</h1>
+
+<div class="summary-cards">
+    <div class="card income">
+        <h3>Total Income</h3>
+        <p>{{ "%.2f"|format(total_income) }}</p>
+    </div>
+    <div class="card expense">
+        <h3>Total Expense</h3>
+        <p>{{ "%.2f"|format(total_expense) }}</p>
+    </div>
+    <div class="card balance">
+        <h3>Balance</h3>
+        <p>{{ "%.2f"|format(balance) }}</p>
+    </div>
+</div>
+
+<h2>Expenses by Category</h2>
+<img src="{{ url_for('static', filename='chart.png') }}?v={{ range(1, 100000) | random }}"
+     alt="Expenses by category chart" class="chart-img">
+
+{% if by_category is not none and by_category.size > 0 %}
+<table class="tx-table">
+    <thead>
+        <tr><th>Category</th><th>Total Spent</th></tr>
+    </thead>
+    <tbody>
+        {% for cat, amt in by_category.items() %}
+        <tr>
+            <td>{{ cat }}</td>
+            <td>{{ "%.2f"|format(amt) }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+{% endblock %}

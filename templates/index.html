@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Your Transactions</h1>
+
+<div class="summary-cards">
+    <div class="card income">
+        <h3>Total Income</h3>
+        <p>{{ "%.2f"|format(total_income) }}</p>
+    </div>
+    <div class="card expense">
+        <h3>Total Expense</h3>
+        <p>{{ "%.2f"|format(total_expense) }}</p>
+    </div>
+    <div class="card balance">
+        <h3>Balance</h3>
+        <p>{{ "%.2f"|format(balance) }}</p>
+    </div>
+</div>
+
+{% if transactions %}
+<table class="tx-table">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tx in transactions %}
+        <tr class="{{ 'row-income' if tx['type'] == 'Income' else 'row-expense' }}">
+            <td>{{ tx['date'] }}</td>
+            <td>{{ tx['type'] }}</td>
+            <td>{{ tx['category'] }}</td>
+            <td>{{ tx['description'] }}</td>
+            <td>{{ "%.2f"|format(tx['amount']) }}</td>
+            <td class="actions">
+                <a href="{{ url_for('edit', tx_id=tx['id']) }}">Edit</a>
+                <form action="{{ url_for('delete', tx_id=tx['id']) }}" method="POST"
+                      onsubmit="return confirm('Delete this transaction?');" style="display:inline;">
+                    <button type="submit" class="link-btn">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="empty-state">No transactions yet. <a href="{{ url_for('add') }}">Add your first one</a>.</p>
+{% endif %}
+
+{% endblock %}

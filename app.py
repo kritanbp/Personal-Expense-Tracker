@@ -1,10 +1,4 @@
-"""
-Personal Expense Tracker
--------------------------
-A simple Flask web app for tracking income and expenses.
-Uses SQLite3 for storage, Pandas for data analysis, and
-Matplotlib for generating spending charts.
-"""
+# Personal Expense Tracker
 
 import os
 import sqlite3
